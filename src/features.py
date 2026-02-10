@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-import config
+from src import config
 
 def add_time_features(df : pd.DataFrame) -> pd.DataFrame:
     df = df.copy()
@@ -17,5 +17,6 @@ def create_target(df : pd.DataFrame , percentile : float) -> pd.Series:
     # Make the Series type explicit for static type checkers.
     total_amount: pd.Series = df['Quantity'].astype(float).mul(df['Price'].astype(float))
     threshold = float(total_amount.quantile(percentile))
-    return (total_amount >= threshold).astype(int)
+    return (total_amount >= threshold).astype(int)\
+    
 

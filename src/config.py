@@ -15,6 +15,9 @@ REQUIRED_COLUMNS = [
     'StockCode'
 ]
 
+REQUIRED_CLEAN_COLUMNS = ['Country', 'StockCode', 'Year', 'Month', 'Day', 'Hour', 'min', 'sec',
+       'is_weekend' , 'target' , 'InvoiceDate']
+
 NUMERIC_FEATURES = [
     'Quantity',
     'Price'
