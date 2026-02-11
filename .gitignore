@@ -2,4 +2,4 @@ __pycache__/
 .env
 *.ipynb_checkpoints
 models/
-data_feature_test.ipynb
+data/
