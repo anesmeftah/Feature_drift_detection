@@ -20,8 +20,7 @@ REQUIRED_CLEAN_COLUMNS = ['InvoiceDate', 'Country', 'StockCode', 'Year', 'Month'
        'quarter', 'stockcode_freq', 'country_freq', 'target']
 
 NUMERIC_FEATURES = [
-    'Quantity',
-    'Price'
+    "Hour" , "Month" , "country_freq" , "stockcode_freq"
 ]
 
 CATEGORICAL_FEATURES = [
