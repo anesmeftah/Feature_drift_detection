@@ -19,33 +19,14 @@ Compute baseline statistics on a reference dataset and compare them to a new bat
 
 Large changes in these values indicate potential drift.
 
-### 2) Population Stability Index (PSI)
-PSI compares binned feature distributions between a reference set and a current set:
 
-$$\mathrm{PSI} = \sum_{k=1}^{K} (p_k - q_k) \ln\left(\frac{p_k}{q_k}\right)$$
-
-Where:
-- $p_k$ is the reference proportion in bin $k$
-- $q_k$ is the current proportion in bin $k$
-
-Typical interpretation:
-- PSI < 0.1: no significant drift
-- 0.1 <= PSI < 0.2: moderate drift
-- PSI >= 0.2: significant drift
-
-### 3) Kolmogorov-Smirnov (KS) test (continuous)
+### 2) Kolmogorov-Smirnov (KS) test (continuous)
 KS measures the maximum distance between cumulative distributions:
 
 $$D = \sup_x |F_{ref}(x) - F_{cur}(x)|$$
 
 A large $D$ suggests the distributions differ.
 
-### 4) Chi-square test (categorical)
-For categorical features, compare observed vs expected counts:
-
-$$\chi^2 = \sum_{k=1}^{K} \frac{(O_k - E_k)^2}{E_k}$$
-
-Higher values indicate drift in category frequencies.
 
 ## Project structure
 - data/
