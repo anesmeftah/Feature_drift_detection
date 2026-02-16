@@ -19,4 +19,4 @@ def create_target(df : pd.DataFrame , percentile : float) -> pd.Series:
     threshold = float(total_amount.quantile(percentile))
     return (total_amount >= threshold).astype(int)\
     
-
+def calculate_country_frequency():

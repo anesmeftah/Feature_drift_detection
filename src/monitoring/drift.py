@@ -19,12 +19,45 @@ def feature_drift_detection(
     :param return_details: Description
     :type return_details: bool
     """
+    missing_prod = set(numeric_features) - set(X_prod.columns)
+    missing_ref  = set(numeric_features) - set(X_ref.columns)
+
+    if missing_prod or missing_ref:
+        raise ValueError(f"Missing features. prod: {missing_prod}, ref: {missing_ref}")
+
+
+    for feature in numeric_features:
+        if not pd.api.types.is_numeric_dtype(X_ref[feature]):
+            raise TypeError(f"{feature} in X_ref is not numeric")
+
+        if not pd.api.types.is_numeric_dtype(X_prod[feature]):
+            raise TypeError(f"{feature} in X_prod is not numeric")
+
+        
+        if X_ref[feature].isna().any():
+            raise ValueError(f"NaN detected in X_ref[{feature}]")
+
+        if X_prod[feature].isna().any():
+            raise ValueError(f"NaN detected in X_prod[{feature}]")
+
+        if np.isinf(X_prod[feature]).any():
+            raise ValueError(f"Inf detected in X_prod[{feature}]")
+
+        if np.isinf(X_ref[feature]).any():
+            raise ValueError(f"Inf detected in X_ref[{feature}]")
+
+        
+
+
     alerts = {}
     results = {}
 
     for feature in numeric_features:
-        ref_arr = X_ref[feature].dropna().to_numpy()
-        prod_arr = X_prod[feature].dropna().to_numpy()
+        ref_arr = X_ref[feature].copy()
+        prod_arr = X_prod[feature].cop()
+
+        if len(ref_arr) < 30 or len(prod_arr) < 30:
+            raise ValueError("Sample size too small for KS test")  # KS is unstable with very small samples
 
         D = ks_statistic(ref_arr, prod_arr)
         results[feature] = D
@@ -70,7 +103,6 @@ def ks_statistic(ref: np.ndarray, prod: np.ndarray) -> float:
     F_ref = edf_callable(ref_sorted)
     F_prod = edf_callable(prod_sorted)
 
-    # evaluate on combined support
-    support = np.sort(np.concatenate([ref_sorted, prod_sorted]))
+    support = np.sort(np.concatenate([ref_sorted, prod_sorted])) # need to fix complexity
 
     return np.max(np.abs(F_ref(support) - F_prod(support)))
